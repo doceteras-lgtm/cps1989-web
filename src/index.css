@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* CPS — Brand: deep forest green + warm cream + sanitary lime accent */
+    --background: 0 0% 100%;
+    --foreground: 155 30% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 155 30% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 155 30% 12%;
+
+    --primary: 155 60% 18%;
+    --primary-foreground: 42 47% 96%;
+
+    --secondary: 42 36% 92%;
+    --secondary-foreground: 155 40% 18%;
+
+    --muted: 150 14% 96%;
+    --muted-foreground: 155 12% 38%;
+
+    --accent: 84 60% 92%;
+    --accent-foreground: 84 80% 22%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 12% 88%;
+    --input: 150 12% 88%;
+    --ring: 155 60% 18%;
+
+    --brand-dark: 155 60% 15%;
+    --brand-cream: 42 47% 95%;
+    --brand-lime: 84 65% 38%;
+    --brand-amber: 38 80% 50%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  html, body, #root {
+    height: 100%;
+  }
+}

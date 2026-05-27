@@ -1,0 +1,14 @@
+# Placeholder folder for client-provided product photos
+
+Cuando el cliente entregue fotos reales del equipo, instalaciones,
+certificados o aplicaciones en campo, colocarlas aquí:
+
+- hero.jpg        — foto principal del Hero (1600x900 sugerido)
+- empresa.jpg     — comedor industrial / restaurante (800x600)
+- casa.jpg        — interior de casa familiar (800x600)
+- equipo.jpg      — técnicos CPS uniformados (800x600)
+- certificado.jpg — escaneo del certificado CICOPLAFEST original (600x800)
+
+Luego reemplazar los SVG inline en MarketingLanding.tsx por:
+
+  <img src="/img/hero.jpg" alt="..." className="..." />
