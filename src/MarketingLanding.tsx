@@ -887,8 +887,14 @@ function ContactForm() {
     const plaga = sessionStorage.getItem('cps:preselect:plaga') ?? initialForm.plaga
     return { ...initialForm, tipo, plaga }
   })
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  // 'ambiguous' = network error post-retry: el lead pudo o no haberse
+  // procesado. Diferenciado de 'error' (server respondió no-OK certero)
+  // para evitar que el usuario reintente y duplique.
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'ambiguous' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  // Bloquea el botón 5s extras después de cualquier intento, para que
+  // doble-click o "fui muy rápido" no genere requests duplicados.
+  const [coolingDown, setCoolingDown] = useState(false)
 
   const onChange = (field: keyof FormState) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -896,11 +902,25 @@ function ContactForm() {
 
   const setTipo = (tipo: Audience) => setForm((f) => ({ ...f, tipo }))
 
+  const clearPreselect = () => {
+    try {
+      sessionStorage.removeItem('cps:preselect:tipo')
+      sessionStorage.removeItem('cps:preselect:plaga')
+    } catch {
+      /* ignore */
+    }
+  }
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (status === 'sending') return
+    if (status === 'sending' || coolingDown) return
     setStatus('sending')
     setErrorMsg(null)
+
+    const finishWithCooldown = () => {
+      setCoolingDown(true)
+      setTimeout(() => setCoolingDown(false), 5000)
+    }
 
     try {
       await submitContact({
@@ -917,24 +937,34 @@ function ContactForm() {
         },
       })
       setStatus('sent')
-      // Limpia el form pero conserva tipo seleccionado
+      // Limpia el form preservando solo el tipo (casa/empresa)
       setForm({ ...initialForm, tipo: form.tipo })
-      try {
-        sessionStorage.removeItem('cps:preselect:tipo')
-        sessionStorage.removeItem('cps:preselect:plaga')
-      } catch {
-        /* ignore */
-      }
+      clearPreselect()
+      finishWithCooldown()
     } catch (err) {
       const apiErr = err as ApiError
+      // Network/timeout: el server posiblemente sí procesó. NO permitir
+      // retry inmediato (eso es lo que generaría duplicados). Mostrar
+      // estado 'ambiguous' + limpiar form + cooldown 5s.
+      if (apiErr.kind === 'network' || apiErr.kind === 'timeout') {
+        setStatus('ambiguous')
+        setForm({ ...initialForm, tipo: form.tipo })
+        clearPreselect()
+        finishWithCooldown()
+        return
+      }
+      // Server respondió un status real → no se procesó
       setStatus('error')
       setErrorMsg(
         apiErr.status === 429
           ? 'Demasiados envíos seguidos. Inténtalo en un minuto.'
           : apiErr.status === 400
             ? 'Revisa los campos: hubo un dato inválido.'
-            : 'No pudimos enviar el mensaje. Vuelve a intentarlo en un momento.',
+            : apiErr.status === 503
+              ? 'Servicio en mantenimiento. Inténtalo en unos minutos.'
+              : 'No pudimos enviar el mensaje. Vuelve a intentarlo en un momento.',
       )
+      finishWithCooldown()
     }
   }
 
@@ -1061,7 +1091,7 @@ function ContactForm() {
         <Button
           type="submit"
           size="lg"
-          disabled={status === 'sending'}
+          disabled={status === 'sending' || coolingDown}
           className="bg-[hsl(var(--brand-dark))] text-[hsl(var(--brand-cream))] hover:bg-[hsl(var(--brand-dark))]/90 font-semibold"
         >
           {status === 'sending' ? (
@@ -1088,6 +1118,19 @@ function ContactForm() {
             <p className="font-semibold text-foreground">Mensaje recibido.</p>
             <p className="text-muted-foreground mt-0.5">
               Te contactamos a la brevedad. Respuesta dentro de 24 h hábiles.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {status === 'ambiguous' && (
+        <div className="flex items-start gap-2 rounded-md bg-[hsl(var(--brand-amber))]/15 border border-[hsl(var(--brand-amber))]/40 p-4 text-sm">
+          <CheckCircle2 className="h-5 w-5 text-[hsl(var(--brand-amber))] mt-0.5" />
+          <div>
+            <p className="font-semibold text-foreground">Tu mensaje probablemente ya llegó.</p>
+            <p className="text-muted-foreground mt-0.5">
+              La conexión se cortó antes de confirmarlo, pero el sistema lo procesó.
+              Espera nuestra respuesta antes de reenviar (24 h hábiles) — así evitas duplicarlo.
             </p>
           </div>
         </div>
