@@ -12,9 +12,7 @@ import {
   Home,
   Leaf,
   Loader2,
-  Mail,
   MapPin,
-  Phone,
   Rat,
   Send,
   ShieldCheck,
@@ -79,13 +77,6 @@ function Header() {
           <a href="#historia" className="hover:text-foreground transition-colors">Historia</a>
         </nav>
         <div className="flex items-center gap-3">
-          <a
-            href="tel:+525500000000"
-            className="hidden sm:inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-          >
-            <Phone className="h-4 w-4" />
-            <span>55 0000 0000</span>
-          </a>
           <a href="#contacto">
             <Button
               size="sm"
@@ -839,29 +830,17 @@ function ContactSection() {
             </p>
 
             <div className="mt-10 space-y-4 text-sm">
-              <a
-                href="mailto:contacto@cps1989.com"
-                className="flex items-center gap-3 text-foreground hover:text-[hsl(var(--brand-dark))]"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
-                  <Mail className="h-4 w-4" />
-                </span>
-                contacto@cps1989.com
-              </a>
-              <a
-                href="tel:+525500000000"
-                className="flex items-center gap-3 text-foreground hover:text-[hsl(var(--brand-dark))]"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
-                  <Phone className="h-4 w-4" />
-                </span>
-                55 0000 0000
-              </a>
               <div className="flex items-center gap-3 text-foreground">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
                   <MapPin className="h-4 w-4" />
                 </span>
                 Oficinas en Ciudad de México
+              </div>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
+                  <Clock className="h-4 w-4" />
+                </span>
+                Respuesta en menos de 24 h hábiles
               </div>
             </div>
           </div>
@@ -954,7 +933,7 @@ function ContactForm() {
           ? 'Demasiados envíos seguidos. Inténtalo en un minuto.'
           : apiErr.status === 400
             ? 'Revisa los campos: hubo un dato inválido.'
-            : 'No pudimos enviar el mensaje. Llámanos al 55 0000 0000.',
+            : 'No pudimos enviar el mensaje. Vuelve a intentarlo en un momento.',
       )
     }
   }
@@ -1108,7 +1087,7 @@ function ContactForm() {
           <div>
             <p className="font-semibold text-foreground">Mensaje recibido.</p>
             <p className="text-muted-foreground mt-0.5">
-              Te contactamos a la brevedad. Si es urgente, llámanos al 55 0000 0000.
+              Te contactamos a la brevedad. Respuesta dentro de 24 h hábiles.
             </p>
           </div>
         </div>
@@ -1201,9 +1180,13 @@ function Footer() {
           <div className="md:col-span-4">
             <p className="text-xs uppercase tracking-[0.18em] text-white/40 mb-3">Contacto</p>
             <ul className="space-y-2 text-sm">
-              <li>contacto@cps1989.com</li>
-              <li>55 0000 0000</li>
               <li>Ciudad de México</li>
+              <li>Cobertura en CDMX, Edomex, Morelos, Hidalgo y Querétaro</li>
+              <li>
+                <a href="#contacto" className="underline-offset-4 hover:underline">
+                  Solicita cotización →
+                </a>
+              </li>
             </ul>
           </div>
         </div>
