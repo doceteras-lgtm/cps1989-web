@@ -12,6 +12,7 @@ import {
   Home,
   Leaf,
   Loader2,
+  Mail,
   MapPin,
   Rat,
   Send,
@@ -830,6 +831,15 @@ function ContactSection() {
             </p>
 
             <div className="mt-10 space-y-4 text-sm">
+              <a
+                href="mailto:contacto@cps1989.com"
+                className="flex items-center gap-3 text-foreground hover:text-[hsl(var(--brand-dark))] transition-colors"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
+                  <Mail className="h-4 w-4" />
+                </span>
+                contacto@cps1989.com
+              </a>
               <div className="flex items-center gap-3 text-foreground">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
                   <MapPin className="h-4 w-4" />
@@ -1223,6 +1233,14 @@ function Footer() {
           <div className="md:col-span-4">
             <p className="text-xs uppercase tracking-[0.18em] text-white/40 mb-3">Contacto</p>
             <ul className="space-y-2 text-sm">
+              <li>
+                <a
+                  href="mailto:contacto@cps1989.com"
+                  className="hover:text-white underline-offset-4 hover:underline"
+                >
+                  contacto@cps1989.com
+                </a>
+              </li>
               <li>Ciudad de México</li>
               <li>Cobertura en CDMX, Edomex, Morelos, Hidalgo y Querétaro</li>
               <li>
