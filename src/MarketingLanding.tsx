@@ -199,7 +199,7 @@ function Hero() {
           </div>
 
           <div className="md:col-span-5">
-            <HeroIllustration />
+            <HeroImage />
           </div>
         </div>
       </div>
@@ -208,14 +208,35 @@ function Hero() {
 }
 
 /**
- * Inline SVG hero illustration — sin dependencias externas, brand-aligned.
- * Reemplazable por foto real cuando el cliente nos pase imagen
- * (sugerencia: equipo CPS con uniforme + edificio mexicano).
- * TODO[cliente]: cambiar por <img src="/img/hero.jpg" /> cuando esté lista.
+ * Hero image — foto profesional desde Unsplash CDN.
+ *
+ * Imagen elegida: técnica con N95 + guantes amarillos limpiando una
+ * ventana. Comunica trabajo sanitario profesional con PPE visible,
+ * aplica tanto a contexto residencial como comercial.
+ *
+ * Photo by Karolina Grabowska on Pexels / Unsplash CDN. Foto libre
+ * comercialmente, no requiere attribution pero la dejamos como
+ * cortesía en el código.
+ *
+ * Cuando el cliente entregue fotos reales del equipo CPS, reemplazar
+ * `src` por `/img/hero.jpg` y dejar `srcSet` con sus variantes.
+ *
+ * Performance:
+ * - srcSet responsive: 600w, 900w, 1200w para no servir 1.2MP en
+ *   pantallas pequeñas.
+ * - loading="eager" porque está above-the-fold (no diferir).
+ * - fetchPriority="high" para priorizar sobre otros recursos.
+ * - Fallback: si la URL de Unsplash truena, el container queda con un
+ *   gradiente brand-aligned (mismo del SVG anterior) — no white box.
+ * - El badge "CPS · Desde 1989" en la esquina inferior izquierda da
+ *   refuerzo de marca encima de la foto.
  */
-function HeroIllustration() {
+function HeroImage() {
+  const baseUrl = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952'
+  const buildSrc = (w: number) => `${baseUrl}?w=${w}&auto=format&fit=crop&q=80`
   return (
-    <div className="relative aspect-square max-w-md mx-auto">
+    <div className="relative aspect-[4/5] max-w-md mx-auto">
+      {/* Fallback color visible mientras carga o si la imagen falla */}
       <div
         className="absolute inset-0 rounded-3xl"
         style={{
@@ -223,58 +244,35 @@ function HeroIllustration() {
             'linear-gradient(135deg, hsl(var(--brand-lime)) 0%, hsl(var(--brand-dark)) 100%)',
         }}
       />
-      <svg
-        viewBox="0 0 400 400"
-        className="relative w-full h-full"
-        aria-hidden
-      >
-        <defs>
-          <linearGradient id="cream" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="hsl(var(--brand-cream))" stopOpacity="0.95" />
-            <stop offset="1" stopColor="hsl(var(--brand-cream))" stopOpacity="0.75" />
-          </linearGradient>
-        </defs>
-        {/* Building / commercial */}
-        <rect x="60" y="120" width="120" height="200" rx="6" fill="url(#cream)" opacity="0.92" />
-        <rect x="80" y="150" width="20" height="20" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="110" y="150" width="20" height="20" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="140" y="150" width="20" height="20" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="80" y="185" width="20" height="20" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="110" y="185" width="20" height="20" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="140" y="185" width="20" height="20" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="105" y="240" width="30" height="80" fill="hsl(var(--brand-dark))" opacity="0.6" />
-
-        {/* House */}
-        <polygon points="220,160 280,110 340,160" fill="url(#cream)" opacity="0.92" />
-        <rect x="220" y="160" width="120" height="160" rx="4" fill="url(#cream)" opacity="0.92" />
-        <rect x="240" y="190" width="25" height="25" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="295" y="190" width="25" height="25" rx="2" fill="hsl(var(--brand-dark))" opacity="0.4" />
-        <rect x="265" y="250" width="30" height="70" fill="hsl(var(--brand-dark))" opacity="0.6" />
-
-        {/* Shield overlay representing protection */}
-        <g transform="translate(160 220)">
-          <path
-            d="M40 0 L75 12 L75 45 Q75 70 40 85 Q5 70 5 45 L5 12 Z"
-            fill="hsl(var(--brand-lime))"
-            stroke="hsl(var(--brand-dark))"
-            strokeWidth="3"
-          />
-          <text
-            x="40"
-            y="50"
-            textAnchor="middle"
-            fontSize="22"
-            fontWeight="900"
-            fill="hsl(var(--brand-dark))"
-            fontFamily="Inter, system-ui, sans-serif"
-          >
+      <img
+        src={buildSrc(900)}
+        srcSet={`${buildSrc(600)} 600w, ${buildSrc(900)} 900w, ${buildSrc(1200)} 1200w`}
+        sizes="(min-width: 768px) 400px, 100vw"
+        alt="Técnica profesional aplicando protocolo sanitario con equipo de protección personal"
+        loading="eager"
+        fetchPriority="high"
+        className="relative w-full h-full object-cover rounded-3xl shadow-2xl ring-1 ring-white/10"
+      />
+      {/* Overlay de tinte verde para integrar con el hero dark */}
+      <div
+        className="absolute inset-0 rounded-3xl pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(180deg, transparent 50%, hsl(var(--brand-dark) / 0.45) 100%)',
+        }}
+      />
+      {/* Badge de marca anclado abajo-izquierda */}
+      <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
+        <div className="flex items-center gap-2 bg-[hsl(var(--brand-dark))]/85 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--brand-cream))]">
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[hsl(var(--brand-lime))] text-[hsl(var(--brand-dark))] text-[9px] font-extrabold">
             CPS
-          </text>
-        </g>
-
-        {/* Ground line */}
-        <rect x="20" y="318" width="360" height="6" rx="3" fill="hsl(var(--brand-dark))" opacity="0.3" />
-      </svg>
+          </span>
+          Desde 1989
+        </div>
+        <div className="bg-[hsl(var(--brand-lime))] text-[hsl(var(--brand-dark))] rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider">
+          Categoría IV
+        </div>
+      </div>
     </div>
   )
 }
