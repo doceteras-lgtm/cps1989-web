@@ -828,7 +828,9 @@ function ContactSection() {
               para casa por número de cuartos y tipo de plaga. Sin compromiso.
             </p>
 
-            <div className="mt-10 space-y-4 text-sm">
+            <HandshakeCard />
+
+            <div className="mt-8 space-y-4 text-sm">
               <a
                 href="mailto:contacto@cps1989.com"
                 className="flex items-center gap-3 text-foreground hover:text-[hsl(var(--brand-dark))] transition-colors"
@@ -838,12 +840,7 @@ function ContactSection() {
                 </span>
                 contacto@cps1989.com
               </a>
-              <div className="flex items-center gap-3 text-foreground">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
-                  <MapPin className="h-4 w-4" />
-                </span>
-                Oficinas en Ciudad de México
-              </div>
+              <OfficeRow />
               <div className="flex items-center gap-3 text-muted-foreground">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(var(--brand-cream))] border">
                   <Clock className="h-4 w-4" />
@@ -859,6 +856,86 @@ function ContactSection() {
         </div>
       </div>
     </section>
+  )
+}
+
+/**
+ * Tarjeta aspiracional con foto de handshake entre la descripción y los
+ * contact rows del lado izquierdo. Comunica "te vamos a atender bien" sin
+ * usar palabras, justo en el momento que el visitante decide llenar el form.
+ *
+ * Imagen: photo-1521791136064-7986c2920216 (Unsplash) — close-up de
+ * apretón de manos profesional. URL verificada estable.
+ * Foto placeholder hasta que el cliente nos pase fotografía propia.
+ */
+function HandshakeCard() {
+  const baseUrl = 'https://images.unsplash.com/photo-1521791136064-7986c2920216'
+  const buildSrc = (w: number) => `${baseUrl}?w=${w}&auto=format&fit=crop&q=80`
+  return (
+    <div className="relative mt-8 aspect-[4/3] rounded-2xl overflow-hidden shadow-lg ring-1 ring-[hsl(var(--brand-dark))]/10">
+      {/* Fallback gradient */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(135deg, hsl(var(--brand-dark)) 0%, hsl(var(--brand-lime)) 100%)',
+        }}
+      />
+      <img
+        src={buildSrc(800)}
+        srcSet={`${buildSrc(500)} 500w, ${buildSrc(800)} 800w, ${buildSrc(1200)} 1200w`}
+        sizes="(min-width: 768px) 400px, 100vw"
+        alt="Apretón de manos profesional cerrando acuerdo de servicio"
+        loading="lazy"
+        className="relative w-full h-full object-cover"
+      />
+      {/* Overlay para legibilidad del texto inferior */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(180deg, transparent 40%, hsl(var(--brand-dark) / 0.85) 100%)',
+        }}
+      />
+      <div className="absolute bottom-0 left-0 right-0 p-5 text-[hsl(var(--brand-cream))]">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[hsl(var(--brand-lime))]">
+          Clientes desde 1989
+        </p>
+        <p className="mt-1.5 text-base font-display font-bold leading-snug">
+          +10 años de relación promedio con quienes confían en CPS.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Row del office con thumbnail de la Catedral del Zócalo en CDMX.
+ * Reemplaza el icono genérico de MapPin por una miniatura visual que
+ * ancla la marca a una ciudad real, no a "alguna oficina genérica".
+ *
+ * Imagen: photo-1585464231875-d9ef1f5ad396 (Unsplash) — Catedral
+ * Metropolitana del Zócalo con bandera mexicana al lado.
+ */
+function OfficeRow() {
+  const baseUrl = 'https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396'
+  return (
+    <div className="flex items-center gap-3 text-foreground">
+      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl overflow-hidden border bg-[hsl(var(--brand-cream))]">
+        <img
+          src={`${baseUrl}?w=160&h=160&auto=format&fit=crop&q=80`}
+          alt="Ciudad de México"
+          loading="lazy"
+          className="w-full h-full object-cover"
+        />
+      </span>
+      <div className="flex flex-col">
+        <span className="font-medium">Oficinas en Ciudad de México</span>
+        <span className="text-xs text-muted-foreground">
+          Cobertura en 5 estados del centro
+        </span>
+      </div>
+    </div>
   )
 }
 
