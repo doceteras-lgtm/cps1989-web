@@ -56,4 +56,12 @@
   html, body, #root {
     height: 100%;
   }
+  /* Smooth scroll para los anchors internos (CTAs que apuntan a #contacto,
+     #servicios, etc). Respeta prefers-reduced-motion automáticamente. */
+  html {
+    scroll-behavior: smooth;
+    /* Compensar el header sticky de 64px para que el destino no quede
+       tapado al scrollear. */
+    scroll-padding-top: 80px;
+  }
 }

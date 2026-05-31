@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Activity,
   ArrowRight,
@@ -420,7 +420,7 @@ function AudienceCard({
       </ul>
 
       <div className="mt-8">
-        <a href={`#contacto?tipo=${kind}`} onClick={() => preselectAudience(kind)}>
+        <a href="#contacto" onClick={() => preselectAudience(kind)}>
           <Button
             size="lg"
             className={
@@ -439,15 +439,19 @@ function AudienceCard({
 }
 
 /**
- * Preselecciona empresa/casa en el form de contacto via sessionStorage.
- * El form lee este valor al montar — no usamos query string para no
- * obligar full reload ni router.
+ * Preselecciona empresa/casa en el form. El form ya está montado en la
+ * misma página, así que sessionStorage solo cubre el caso "cargar fresca"
+ * — para clicks in-page disparamos un CustomEvent que el form escucha y
+ * actualiza su state. El href "#contacto" se encarga del scroll nativo.
  */
 function preselectAudience(tipo: Audience) {
   try {
     sessionStorage.setItem('cps:preselect:tipo', tipo)
   } catch {
     /* ignore */
+  }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cps:preselect', { detail: { tipo } }))
   }
 }
 
@@ -538,6 +542,9 @@ function preselectPest(pestKey: string) {
     sessionStorage.setItem('cps:preselect:plaga', pestKey)
   } catch {
     /* ignore */
+  }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cps:preselect', { detail: { plaga: pestKey } }))
   }
 }
 
@@ -964,7 +971,7 @@ const initialForm: FormState = {
 
 function ContactForm() {
   // Lee preselección desde sessionStorage (puesta por los CTAs de
-  // AudienceCard / PestTier). Se ejecuta solo en cliente.
+  // AudienceCard / PestTier). Se ejecuta solo en cliente, solo al montar.
   const [form, setForm] = useState<FormState>(() => {
     if (typeof window === 'undefined') return initialForm
     const tipo = (sessionStorage.getItem('cps:preselect:tipo') as Audience | null) ?? initialForm.tipo
@@ -979,6 +986,29 @@ function ContactForm() {
   // Bloquea el botón 5s extras después de cualquier intento, para que
   // doble-click o "fui muy rápido" no genere requests duplicados.
   const [coolingDown, setCoolingDown] = useState(false)
+
+  // Escucha clicks in-page de AudienceCard / PestTier. El form ya está
+  // montado en la misma página, así que el sessionStorage del initial
+  // state nunca se vuelve a leer. Este listener actualiza el state en
+  // vivo cuando el usuario hace click en "Cotizar para mi empresa/casa"
+  // o en una plaga del catálogo. El href "#contacto" del link hace el
+  // scroll nativo.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ tipo?: Audience; plaga?: string }>).detail
+      if (!detail) return
+      setForm((f) => ({
+        ...f,
+        ...(detail.tipo ? { tipo: detail.tipo } : {}),
+        ...(detail.plaga ? { plaga: detail.plaga } : {}),
+      }))
+      // Si el usuario está en error/ambiguous y reabre el form via CTA,
+      // reseteamos el estado de status para que no vea callouts viejos.
+      setStatus((s) => (s === 'sent' ? s : 'idle'))
+    }
+    window.addEventListener('cps:preselect', handler)
+    return () => window.removeEventListener('cps:preselect', handler)
+  }, [])
 
   const onChange = (field: keyof FormState) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
