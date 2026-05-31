@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
-  <rect width="40" height="40" rx="9" fill="#0F3D2E"/>
+  <rect width="40" height="40" rx="9" fill="#143434"/>
   <text x="50%" y="56%" text-anchor="middle" dominant-baseline="middle"
         fill="#F4EEDB" font-size="14" font-weight="800"
         font-family="Inter, system-ui, sans-serif">CPS</text>
