@@ -4,27 +4,27 @@
 
 @layer base {
   :root {
-    /* CPS — Brand: deep teal (modern, elegant) + warm cream + sanitary lime accent.
-       Antes era hue 155 (olive forest). Movido a 180 (deep teal) + saturación
-       60→45 para feel más sofisticado y menos "tierra". El lime amarillo-verde
-       se queda como contraste complementario (cálido sobre frío). */
+    /* CPS — Brand: slate teal (gris-azul moderno) + warm cream + sanitary lime.
+       Iteración: hue 180 (teal puro) → 200 (slate con base azul) y saturación
+       45→30 para darle más "gris elegante" y menos "verde fuerte". El lime
+       amarillo-verde se mantiene como contraste complementario cálido. */
     --background: 0 0% 100%;
-    --foreground: 180 30% 12%;
+    --foreground: 200 25% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 180 30% 12%;
+    --card-foreground: 200 25% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 180 30% 12%;
+    --popover-foreground: 200 25% 12%;
 
-    --primary: 180 50% 18%;
+    --primary: 200 40% 18%;
     --primary-foreground: 42 47% 96%;
 
     --secondary: 42 36% 92%;
-    --secondary-foreground: 180 40% 18%;
+    --secondary-foreground: 200 30% 18%;
 
-    --muted: 175 14% 96%;
-    --muted-foreground: 180 12% 38%;
+    --muted: 195 12% 96%;
+    --muted-foreground: 200 10% 38%;
 
     --accent: 84 60% 92%;
     --accent-foreground: 84 80% 22%;
@@ -32,11 +32,11 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 175 12% 88%;
-    --input: 175 12% 88%;
-    --ring: 180 50% 18%;
+    --border: 195 10% 88%;
+    --input: 195 10% 88%;
+    --ring: 200 40% 18%;
 
-    --brand-dark: 180 45% 14%;
+    --brand-dark: 200 30% 15%;
     --brand-cream: 42 47% 95%;
     --brand-lime: 84 65% 38%;
     --brand-amber: 38 80% 50%;
