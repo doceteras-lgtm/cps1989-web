@@ -1,0 +1,8 @@
+# CPS · Control de Plagas y Sanidad — robots.txt
+# Permitir indexación completa por todos los bots legítimos.
+
+User-agent: *
+Allow: /
+
+# Sitemap (referenciado para que Google/Bing lo descubran)
+Sitemap: https://cps1989.com/sitemap.xml

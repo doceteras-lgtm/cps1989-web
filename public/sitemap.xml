@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://cps1989.com/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/4176412/pexels-photo-4176412.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200&amp;h=630&amp;fit=crop</image:loc>
+      <image:title>Técnico CPS en overol blanco aplicando tratamiento de fumigación</image:title>
+      <image:caption>CPS · Control de Plagas y Sanidad desde 1989</image:caption>
+    </image:image>
+  </url>
+</urlset>
