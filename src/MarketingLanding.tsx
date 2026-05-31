@@ -754,7 +754,7 @@ function Timeline() {
     { year: '1991', title: 'Asociación de Fumigadores', desc: 'Se integra a la Asociación de Fumigadores del Estado de México.' },
     { year: '1993', title: 'Licencia Sanitaria Federal', desc: 'Obtiene la licencia federal #93-033 para aplicación de plaguicidas de uso urbano y jardinería.' },
     { year: '1996', title: 'Distintivo H', desc: 'Primera obtención del máximo galardón a la higiene y limpieza — comedor industrial Televisa San Ángel.' },
-    { year: '2026', title: '36 años de operación', desc: 'CPS continúa cubriendo CDMX, Estado de México, Morelos, Hidalgo y Querétaro con productos avalados por CICOPLAFEST.' },
+    { year: '2026', title: '36 años de operación', desc: 'CPS continúa cubriendo CDMX, Estado de México, Morelos, Hidalgo, Querétaro y Jalisco con productos avalados por CICOPLAFEST.' },
   ]
   return (
     <section id="historia" className="bg-background py-20 md:py-28">
@@ -789,16 +789,16 @@ function Timeline() {
    Cobertura
 ============================================================ */
 function Cobertura() {
-  const estados = ['CDMX', 'Estado de México', 'Morelos', 'Hidalgo', 'Querétaro']
+  const estados = ['CDMX', 'Estado de México', 'Morelos', 'Hidalgo', 'Querétaro', 'Jalisco']
   return (
     <section id="cobertura" className="bg-[hsl(var(--brand-cream))] py-20 md:py-24">
       <div className="max-w-6xl mx-auto px-6">
         <SectionHeader
           eyebrow="Cobertura"
-          title="Operamos en 5 estados del centro del país."
-          sub="Oficinas en CDMX con capacidad para atender toda la zona metropolitana y estados vecinos."
+          title="Operamos en 6 estados de México."
+          sub="Oficinas en CDMX con capacidad para atender la zona metropolitana, estados vecinos del centro y el occidente del país."
         />
-        <div className="mt-12 grid md:grid-cols-5 gap-3">
+        <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {estados.map((e) => (
             <div
               key={e}
@@ -938,7 +938,7 @@ function OfficeRow() {
       <div className="flex flex-col">
         <span className="font-medium">Oficinas en Ciudad de México</span>
         <span className="text-xs text-muted-foreground">
-          Cobertura en 5 estados del centro
+          Cobertura en 6 estados del país
         </span>
       </div>
     </div>
@@ -1346,7 +1346,7 @@ function Footer() {
                 </a>
               </li>
               <li>Ciudad de México</li>
-              <li>Cobertura en CDMX, Edomex, Morelos, Hidalgo y Querétaro</li>
+              <li>Cobertura en CDMX, Edomex, Morelos, Hidalgo, Querétaro y Jalisco</li>
               <li>
                 <a href="#contacto" className="underline-offset-4 hover:underline">
                   Solicita cotización →
