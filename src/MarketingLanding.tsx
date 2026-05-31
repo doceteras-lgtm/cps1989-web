@@ -208,32 +208,31 @@ function Hero() {
 }
 
 /**
- * Hero image — foto profesional desde Unsplash CDN.
+ * Hero image — foto profesional de fumigación desde Pexels CDN.
  *
- * Imagen elegida: técnica con N95 + guantes amarillos limpiando una
- * ventana. Comunica trabajo sanitario profesional con PPE visible,
- * aplica tanto a contexto residencial como comercial.
+ * Imagen actual: técnico cuerpo entero con overol blanco completo,
+ * capucha, lentes, respirador y guantes azules, sosteniendo aspersora
+ * con vapor saliendo. Ambiente residencial luminoso. Pose confiada,
+ * frontal — comunica "experto en acción" sin ser amenazante.
  *
- * Photo by Karolina Grabowska on Pexels / Unsplash CDN. Foto libre
- * comercialmente, no requiere attribution pero la dejamos como
- * cortesía en el código.
+ * Source: Pexels (https://www.pexels.com/photo/4176412/).
+ * License Pexels: gratis uso comercial, no requiere attribution.
+ * Photo de Polina Tankilevitch.
  *
- * Cuando el cliente entregue fotos reales del equipo CPS, reemplazar
- * `src` por `/img/hero.jpg` y dejar `srcSet` con sus variantes.
+ * Cuando el cliente CPS entregue fotos reales del equipo, reemplazar
+ * `baseUrl` por `/img/hero.jpg` y conservar el patrón de srcSet.
  *
  * Performance:
- * - srcSet responsive: 600w, 900w, 1200w para no servir 1.2MP en
- *   pantallas pequeñas.
- * - loading="eager" porque está above-the-fold (no diferir).
- * - fetchPriority="high" para priorizar sobre otros recursos.
- * - Fallback: si la URL de Unsplash truena, el container queda con un
- *   gradiente brand-aligned (mismo del SVG anterior) — no white box.
- * - El badge "CPS · Desde 1989" en la esquina inferior izquierda da
- *   refuerzo de marca encima de la foto.
+ * - srcSet responsive: 600w, 900w, 1200w. Mobile descarga la chica,
+ *   desktop la grande.
+ * - loading="eager" + fetchPriority="high" porque es above-the-fold.
+ * - Fallback gradient lime→dark detrás del img: si Pexels devuelve 404
+ *   algún día, el contenedor no queda blanco.
+ * - Badges anclados abajo refuerzan marca + categoría toxicológica.
  */
 function HeroImage() {
-  const baseUrl = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952'
-  const buildSrc = (w: number) => `${baseUrl}?w=${w}&auto=format&fit=crop&q=80`
+  const baseUrl = 'https://images.pexels.com/photos/4176412/pexels-photo-4176412.jpeg'
+  const buildSrc = (w: number) => `${baseUrl}?auto=compress&cs=tinysrgb&w=${w}`
   return (
     <div className="relative aspect-[4/5] max-w-md mx-auto">
       {/* Fallback color visible mientras carga o si la imagen falla */}
@@ -248,7 +247,7 @@ function HeroImage() {
         src={buildSrc(900)}
         srcSet={`${buildSrc(600)} 600w, ${buildSrc(900)} 900w, ${buildSrc(1200)} 1200w`}
         sizes="(min-width: 768px) 400px, 100vw"
-        alt="Técnica profesional aplicando protocolo sanitario con equipo de protección personal"
+        alt="Técnico de CPS aplicando tratamiento con overol blanco, respirador y aspersora profesional"
         loading="eager"
         fetchPriority="high"
         className="relative w-full h-full object-cover rounded-3xl shadow-2xl ring-1 ring-white/10"
