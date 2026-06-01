@@ -26,8 +26,8 @@
     --muted: 195 12% 96%;
     --muted-foreground: 200 10% 38%;
 
-    --accent: 84 60% 92%;
-    --accent-foreground: 84 80% 22%;
+    --accent: 130 50% 92%;
+    --accent-foreground: 130 60% 22%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
@@ -38,7 +38,13 @@
 
     --brand-dark: 200 30% 15%;
     --brand-cream: 42 47% 95%;
-    --brand-lime: 84 65% 38%;
+    /* Accent verde alineado al logo oficial CPS (#2D8B3C ≈ HSL 130/51/36).
+       Antes era lime amarillo-verde (hue 84) que clasheaba contra el verde
+       balanceado del logo. Ahora todos los CTAs, badges y highlights usan
+       el mismo verde de marca → cohesión visual total entre logo y página.
+       El nombre del token se queda como `brand-lime` por compat con consumers
+       en TSX; semánticamente ahora es "brand-green". */
+    --brand-lime: 130 51% 36%;
     --brand-amber: 38 80% 50%;
 
     --radius: 0.5rem;
