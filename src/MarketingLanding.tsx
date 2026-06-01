@@ -96,9 +96,8 @@ function Header() {
 function Logo() {
   return (
     <a href="/" className="flex items-center gap-3 font-semibold tracking-tight">
-      <BrandMark size={36} />
+      <BrandMark size={48} />
       <div className="flex flex-col leading-none">
-        <span className="text-lg font-extrabold tracking-tight text-foreground">CPS</span>
         <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
           Desde 1989
         </span>
@@ -107,22 +106,62 @@ function Logo() {
   )
 }
 
-function BrandMark({ size = 36 }: { size?: number }) {
+/**
+ * Logo oficial CPS — sello circular verde con monograma central "CPS"
+ * (serif tipo Playfair) y "CONTROL DE PLAGAS Y SANIDAD" como texto
+ * circular sobre el anillo verde.
+ *
+ * Hardcodeado en SVG (no en hsl(var)) porque es identidad de marca
+ * fija — no cambia con la paleta del sitio. El verde #2D8B3C es del
+ * logo del cliente; el blanco y la tipografía replican el original.
+ *
+ * Diseño responsivo: a 44px+ se lee el texto circular; a tamaños
+ * menores el anillo verde + las letras centrales mantienen identidad
+ * aunque el rim text quede ilegible. Para favicon usamos versión
+ * simplificada (en /public/favicon.svg).
+ */
+function BrandMark({ size = 48 }: { size?: number }) {
+  const green = '#2D8B3C'
   return (
-    <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden>
-      <rect width="40" height="40" rx="9" fill="hsl(var(--brand-dark))" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 200 200"
+      aria-label="Logo CPS · Control de Plagas y Sanidad"
+    >
+      <defs>
+        {/* Path circular para el textPath. Empieza arriba y va horario.
+            radio del path: 78 (entre anillo exterior r=98 e interior r=70) */}
+        <path
+          id="cps-rim-text"
+          d="M 100,22 a 78,78 0 1,1 -0.01,0"
+          fill="none"
+        />
+      </defs>
+      {/* Anillo verde */}
+      <circle cx="100" cy="100" r="98" fill={green} />
+      {/* Centro blanco */}
+      <circle cx="100" cy="100" r="70" fill="white" />
+      {/* Texto circular sobre el anillo. Font-size + letter-spacing
+          calibrados para llenar la circunferencia del path (r=78) con
+          26 caracteres sin gap visible. */}
       <text
-        x="50%"
-        y="56%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="hsl(var(--brand-cream))"
-        fontSize="14"
+        fill="white"
+        fontFamily="'Inter', 'Helvetica Neue', sans-serif"
+        fontSize="17"
         fontWeight="800"
-        fontFamily="Inter, system-ui, sans-serif"
+        letterSpacing="4"
       >
-        CPS
+        <textPath href="#cps-rim-text" startOffset="0%">
+          CONTROL DE PLAGAS Y SANIDAD
+        </textPath>
       </text>
+      {/* Monograma central CPS: P arriba, C abajo-izq, S abajo-der */}
+      <g fill={green} fontFamily="'Playfair Display', 'Georgia', serif" fontWeight="900">
+        <text x="100" y="85" textAnchor="middle" fontSize="48">P</text>
+        <text x="78" y="135" textAnchor="middle" fontSize="48">C</text>
+        <text x="122" y="135" textAnchor="middle" fontSize="48">S</text>
+      </g>
     </svg>
   )
 }
@@ -231,7 +270,7 @@ function Hero() {
  * - Badges anclados abajo refuerzan marca + categoría toxicológica.
  */
 function HeroImage() {
-  const baseUrl = 'https://images.pexels.com/photos/4176412/pexels-photo-4176412.jpeg'
+  const baseUrl = 'https://images.pexels.com/photos/4176924/pexels-photo-4176924.jpeg'
   const buildSrc = (w: number) => `${baseUrl}?auto=compress&cs=tinysrgb&w=${w}`
   return (
     <div className="relative aspect-[4/5] max-w-md mx-auto">
